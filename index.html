@@ -1,31 +1,63 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8 />
-<title>RealVista1.0 TILE OPEN - example</title>
+	<meta charset=utf-8 />
+	<title>RealVista1.0 TILE OPEN - example</title>
 
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+	<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
 
-<style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
+	<script src='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.js'></script>
+	<link href='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.css' rel='stylesheet' />
+
+	<script src='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js'></script>
+	<link href='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css' rel='stylesheet' />
+	<!--[if lt IE 9]>
+	<link href='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.21.0/L.Control.Locate.ie.css' rel='stylesheet' />
+	<![endif]-->
+
+
+
+	<style>
+	body { margin:0; padding:0; }
+	#map { position:absolute; top:0; bottom:0; width:100%; }
+	.leaflet-control-locate {
+		border: 1px solid rgba(0,0,0,0.4);
+	}
+
+	.leaflet-control-locate a {
+		background-color: #fff;
+		background-position: -3px, -2px;
+	}
+
+	.leaflet-control-locate.active a {
+		background-position: -33px -2px;
+	}
+	</style>
 </head>
 <body>
+	<script src='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
 
+	<div id='map'></div>
+	<script>
+	var map = L.mapbox.map('map');
+	var bounds = [[35.2, 6.5], [47.3, 18.7]];
 
-<div id='map'></div>
-<script>
-var map = L.mapbox.map('map').setView([38, 13], 11);
+	map.fitBounds(bounds);
 
-var realvista = L.tileLayer.wms("http://213.215.135.196/reflector/open/service?", {
-	layers: 'rv1',
-	format: 'image/jpeg',
-	attribution: "RealVista1.0 WMS OPEN di e-GEOS SpA - CC BY SA"
-}).addTo(map);    
-</script>
+	var minimappa = new L.Control.MiniMap(L.mapbox.tileLayer('examples.map-9ijuk24y'),{zoomLevelOffset:-7,toggleDisplay:true}).addTo(map);
+	L.control.locate().addTo(map);
+
+	var realvista = L.tileLayer.wms("http://213.215.135.196/reflector/open/service?", {
+		layers: 'rv1',
+		format: 'image/jpeg',
+		attribution: "RealVista1.0 WMS OPEN di e-GEOS SpA - CC BY SA"
+	}).addTo(map);    
+
+	var hash = L.hash(map);
+	</script>
 
 
 </body>
